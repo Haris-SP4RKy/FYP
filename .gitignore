@@ -1,0 +1,17 @@
+# misc
+.vscode
+
+# random selected
+server/node_modules/
+server/.env
+.env
+data/
+node_modules/
+MISC.txt
+docker-compose.temp.yaml
+
+# eslint
+client/.eslintcache
+./client/.eslintcache
+**/**/.eslintcache
+client/.eslintcache~resolving rebase
