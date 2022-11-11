@@ -2,27 +2,64 @@ version: '3.2'
 
 services:
   zookeeper:
-    build:
-      context: zookeeper/
+    image: bitnami/zookeeper:latest
     ports:
       - '2181:2181'
+    volumes:
+      - ./zookeeper/data:/bitnami/zookeeper
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
   kafka:
-    build:
-      context: kafka/
+    image: bitnami/kafka:latest
+    
+    restart: unless-stopped
     ports:
       - '9092:9092'
+      - 29092:29092
     volumes:
       - ./kafka/data:/bitnami/kafka
     environment:
+      - KAFKA_ADVERTISED_HOST_NAME=localhost
       - KAFKA_BROKER_ID=1
-      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092
-      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://127.0.0.1:9092
-      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_ADVERTISED_LISTENERS= PLAINTEXT://localhost:9092
+      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP= PLAINTEXT:PLAINTEXT
+      - KAFKA_INTER_BROKER_LISTENER_NAME=PLAINTEXT
       - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CREATE_TOPICS="test:1:1"
+      - KAFKA_AUTO_CREATE_TOPICS_ENABLE=true
     depends_on:
       - zookeeper
+  connect:
+    image: confluentinc/cp-kafka-connect
+    ports:
+    - '8083:8083'
+    - '9093:9092'
+    environment:
+        - CONNECT_BOOTSTRAP_SERVERS=kafka:9092
+        - CONNECT_GROUP_ID=kafcon3xx
+        - CONNECT_CONFIG_STORAGE_TOPIC=_kafcon3xx-config
+        - CONNECT_OFFSET_STORAGE_TOPIC=_kafcon3xx-offsets
+        - CONNECT_STATUS_STORAGE_TOPIC=_kafcon3xx-status
+        - CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR= 1
+        - CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR= 1
+        - CONNECT_STATUS_STORAGE_REPLICATION_FACTOR= 1
+        - CONNECT_KEY_CONVERTER=org.apache.kafka.connect.json.JsonConverter
+        - CONNECT_VALUE_CONVERTER=org.apache.kafka.connect.json.JsonConverter
+        - CONNECT_INTERNAL_KEY_CONVERTER=org.apache.kafka.connect.json.JsonConverter
+        - CONNECT_INTERNAL_VALUE_CONVERTER=org.apache.kafka.connect.json.JsonConverter
+        - CONNECT_REST_ADVERTISED_HOST_NAME=localhost
+        - CONNECT_PLUGIN_PATH=./kafka-connect/data
+        - ZOOKEEPER_CLIENT_PORT=2181
+              # Logging
+      # Connect client overrides
+        - CONNECT_TASK_SHUTDOWN_GRACEFUL_TIMEOUT_MS= 30000
+        - CONNECT_OFFSET_FLUSH_INTERVAL_MS= 900000
+        - CONNECT_CONSUMER_MAX_POLL_RECORDS= 500
+    depends_on:
+    - zookeeper
+    - kafka
+
   postgres:
     build:
       context: postgres/
@@ -36,7 +73,7 @@ services:
       DB_PORT: 5432
       DB_USER: postgres
       DB_PASSWORD: postgres
-      DB_NAME: postgres
+      DB_NAME: GOGREEN
       POSTGRES_PASSWORD: postgres
 
   redis:
@@ -53,7 +90,7 @@ services:
     build:
       context: rabitmq/
     volumes:
-      - /rabbitmq/data/:/var/lib/rabbitmq/
+      - ./rabbitmq/data/:/var/lib/rabbitmq/
       # - /rabbitmq/log/:/var/log/rabbitmq
     ports:
       - 5672:5672
@@ -134,7 +171,6 @@ services:
       - elk
     depends_on:
       - elasticsearch
-
 networks:
   elk:
     driver: bridge
