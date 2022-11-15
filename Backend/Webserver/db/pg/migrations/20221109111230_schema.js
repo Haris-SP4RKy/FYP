@@ -8,14 +8,14 @@ exports.up = async (knex) => {
 		.createTable('data', function (table) {
 			table.increments('id');
 			table.text('deviceId').notNullable();
-
-			table.text('CO2');
-			table.text('CO');
-			table.text('airQuality');
-			table.text('long');
-			table.text('lat');
+			// table.text('CO2');
+			// table.text('CO');
+			// table.text('airQuality');
+			// table.text('long');
+			// table.text('lat');
+			table.binary('data').notNullable();
 			table.index(['deviceId']);
-			table.index(['long', 'lat']);
+			// table.index(['long', 'lat']);
 			table.timestamps(true, true).notNull();
 		});
         await knex.schema
