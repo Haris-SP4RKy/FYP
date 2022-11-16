@@ -44,7 +44,7 @@ exports.up = async (knex) => {
 	await knex.schema
 	.createTable('sensor_data', function (table) {
 		table.uuid('id').unique().notNullable().primary().defaultTo(knex.raw('uuid_generate_v4()'));
-		table.text('device_id').notNullable().references('device_serial').inTable('devices').onDelete('CASCADE');
+		table.text('device_id').notNullable().references('id').inTable('devices').onDelete('CASCADE');
 		table.text('sensor_type');
 		table.binary('data').notNullable();
 		table.index(['device_id']);
@@ -62,7 +62,7 @@ exports.up = async (knex) => {
 	await knex.schema
 	.createTable('groups', function (table) {
 		table.uuid('id').unique().notNullable().primary().defaultTo(knex.raw('uuid_generate_v4()'));
-		table.text('device_id').notNullable().references('device_serial').inTable('devices').onDelete('CASCADE');
+		table.text('device_id').notNullable().references('id').inTable('devices').onDelete('CASCADE');
 		table.text('group_id').notNullable().references('id').inTable('devices_group').onDelete('CASCADE');
 		table.index(['device_id']);
 		table.timestamps(true, true).notNull();

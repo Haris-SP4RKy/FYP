@@ -1,5 +1,5 @@
 0
-52
+53
 test 0 9
 __consumer_offsets 29 0
 __consumer_offsets 43 0
@@ -14,6 +14,7 @@ __consumer_offsets 19 0
 __consumer_offsets 25 0
 __consumer_offsets 33 0
 __consumer_offsets 41 0
+pjd-us-east-1-query-response 0 0
 __consumer_offsets 37 0
 __consumer_offsets 8 0
 __consumer_offsets 24 0
@@ -30,7 +31,7 @@ __consumer_offsets 44 0
 __consumer_offsets 12 12
 __consumer_offsets 36 0
 __consumer_offsets 45 0
-__consumer_offsets 16 0
+__consumer_offsets 16 6
 __consumer_offsets 10 0
 __consumer_offsets 11 0
 __consumer_offsets 20 0
