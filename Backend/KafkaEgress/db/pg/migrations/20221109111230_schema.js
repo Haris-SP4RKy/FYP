@@ -34,22 +34,27 @@ exports.up = async (knex) => {
 
 	await knex.schema
 	.createTable('devices', function (table) {
-		table.uuid('id').unique().notNullable().primary().defaultTo(knex.raw('uuid_generate_v4()'));
-		table.text('device_serial').notNullable();
-		table.text('sensor_type');
-		table.index(['deviceId']);
+		table.uuid('id').unique().notNullable().defaultTo(knex.raw('uuid_generate_v4()'));
+		table.text('sensor_type').notNullable();
+		table.primary(['id','sensor_type']);
 		table.timestamps(true, true).notNull();
 	});
 
 	await knex.schema
 	.createTable('sensor_data', function (table) {
 		table.uuid('id').unique().notNullable().primary().defaultTo(knex.raw('uuid_generate_v4()'));
-		table.text('device_id').notNullable().references('id').inTable('devices').onDelete('CASCADE');
-		table.text('sensor_type');
+		table.text('device_id').notNullable();
+		table.text('sensor_type').notNullable();
 		table.binary('data').notNullable();
 		table.index(['device_id']);
+		// table.text('latitude').notNullable();
+		// table.text('longitude').notNullable();
 		// table.index(['long', 'lat']);
 		table.timestamps(true, true).notNull();
+		table.foreign(['device_id','sensor_type'])
+        .references(['device_id','sensor_type'])
+        .on('devices').onDelete('CASCADE');
+
 	});
 	await knex.schema
 	.createTable('devices_group', function (table) {
@@ -62,9 +67,13 @@ exports.up = async (knex) => {
 	await knex.schema
 	.createTable('groups', function (table) {
 		table.uuid('id').unique().notNullable().primary().defaultTo(knex.raw('uuid_generate_v4()'));
-		table.text('device_id').notNullable().references('id').inTable('devices').onDelete('CASCADE');
+		table.text('device_id').notNullable();
+		table.text('sensor_type').notNullable();
 		table.text('group_id').notNullable().references('id').inTable('devices_group').onDelete('CASCADE');
 		table.index(['device_id']);
+		table.foreign(['device_id','sensor_type'])
+        .references(['device_id','sensor_type'])
+        .on('devices').onDelete('CASCADE');
 		table.timestamps(true, true).notNull();
 	});
 

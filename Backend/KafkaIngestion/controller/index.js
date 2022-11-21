@@ -7,7 +7,7 @@ module.exports.produceToKafka = async (req, res) => {
       config.KAFKA_TOPIC,
       req.body
     );
-    console.log("haroasdasd")
+    
 
     return res.status(200).json({msg:"SUCCESS"});
   } catch (error) {
