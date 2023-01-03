@@ -11,21 +11,22 @@ class KafkaJs {
           clientId: "KafkaIngestor",
           brokers: [config.KAFKA_URL],
         });
-        RabbitMQMap.set(RABBIT_MQ_NAME, { connection });
+        KAFKA.set(KAFKA_NAME, { connection });
       }
     } catch (e) {
       console.error("[KAFKA]", e.message);
       return setTimeout(() => KafkaJs.init(), 7000);
     }
 
-    return KAFKA.get(RABBIT_MQ_NAME);
+    return KAFKA.get(KAFKA_NAME);
   }
 
   static async sendToTopic(Topic, message, options = {}) {
     try {
       const { connection } = await KafkaJs.get();
-      await connection.connect();
       const producer = connection.producer();
+      await producer.connect();
+      
       await producer.send({
         topic: Topic,
         messages: [{ value: JSON.stringify(message) }],
@@ -44,10 +45,10 @@ class KafkaJs {
     
     await consumer.run({
       eachMessage: async ({ topic, partition, message }) => {
-        console.log({
-          value: message.value.toString(),
-        })
-        cb(message,JSON.parse(message.content.toString()))
+        // console.log({
+        //   value: message.value.toString(),
+        // })
+        cb(Topic,JSON.parse(message.value.toString()))
       },
     })
  
