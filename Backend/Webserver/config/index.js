@@ -11,7 +11,7 @@ module.exports.RABBIT_MQ_HOSTNAME = _.get(process.env, 'RABBIT_MQ_HOSTNAME', 'lo
 module.exports.RABBIT_MQ_PORT = _.get(process.env, 'RABBIT_MQ_PORT', '5672');
 module.exports.RABBIT_MQ_USERNAME = _.get(process.env, 'RABBIT_MQ_USERNAME', 'rabittmq');
 module.exports.RABBIT_MQ_PASSWORD = _.get(process.env, 'RABBIT_MQ_PASSWORD', 'rabittmq');
-
+module.exports.SECRET_KEY = _.get(process.env, 'SECRET_KEY', 'saddd332rdsf32r2344r4fsfsf23r43');
 module.exports.POSTGRE_HOST = _.get(process.env, 'POSTGRE_HOST', '127.0.0.1');
 module.exports.POSTGRE_DB = _.get(process.env, 'POSTGRE_DB', 'GOGREEN');
 module.exports.POSTGRE_PORT = _.get(process.env, 'POSTGRE_PORT', '5432');
