@@ -9,14 +9,15 @@
 //     ...usersResolvers.Mutation
 //   }
 // };
-const { userTypes } = require('./types.js')
-const { userQuery } = require('./query.js')
-const { userMutations } = require('./mutation.js')
-const { userResolvers } = require('./resolvers.js')
+const { userTypes } = require ('./types.js')
+const { userQuery } =require( './query.js')
+const { userMutation } =require( './mutation.js')
+const { userResolvers } =require( './resolvers.js')
 
 module.exports = {
     userResolvers,
     userTypes,
     userQuery,
-    userMutations
+    userMutation
+
 }
