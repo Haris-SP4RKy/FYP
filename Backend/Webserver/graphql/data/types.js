@@ -1,24 +1,24 @@
 
 module.exports.userTypes =`
-  type User {
+  type Device {
     id: ID!
-    email: String
-    token: String
-    name: String
-    createdAt: String
+    sensor_type: String!
+    token: String!
+    name: String!
+    createdAt: String!
   }
   input RegisterInput {
-    name: String!
+    username: String!
     password: String!
     confirmPassword: String!
     email: String!
   }
   extend type Query {
     byId: User
+    getAll: [User]
   }
   extend type Mutation {
     register(registerInput: RegisterInput): User!
     login(email: String!, password: String!): User!
-    updateUser(email: String!, password: String! , confirmPassword: String! ,name: String!): User!
   }
 `;
