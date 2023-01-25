@@ -1,4 +1,6 @@
 const db = require('../../../KafkaEgress/db/pg/db');
+const { GraphQLError }= require('graphql');
+
 module.exports.userQuery = {
          byId:async (parent, args, info, context) => {
 

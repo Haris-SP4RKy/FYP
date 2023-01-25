@@ -1,5 +1,5 @@
 
-module.exports.userTypes =`
+module.exports.analyticsTypes =`
   type Device {
     id: ID!
     sensor_type: String!

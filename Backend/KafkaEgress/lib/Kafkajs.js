@@ -26,7 +26,7 @@ class KafkaJs {
       const { connection } = await KafkaJs.get();
       const producer = connection.producer();
       await producer.connect();
-      
+
       await producer.send({
         topic: Topic,
         messages: [{ value: JSON.stringify(message) }],
@@ -42,16 +42,16 @@ class KafkaJs {
     const consumer = connection.consumer({ groupId: 'Kafka-egress' })
     await consumer.connect()
     await consumer.subscribe({ topic: Topic, fromBeginning: true })
-    
+
     await consumer.run({
       eachMessage: async ({ topic, partition, message }) => {
         // console.log({
         //   value: message.value.toString(),
         // })
-        cb(Topic,JSON.parse(message.value.toString()))
+        cb(Topic, JSON.parse(message.value.toString()))
       },
     })
- 
+
   }
 
   //   static async close() {

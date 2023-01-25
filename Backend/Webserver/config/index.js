@@ -21,4 +21,9 @@ module.exports.POSTGRE_PASSWORD = _.get(process.env, 'POSTGRE_PASSWORD', 'postgr
 module.exports.REDIS_HOST = _.get(process.env, 'REDIS_HOST', 'localhost');
 module.exports.REDIS_PORT = _.get(process.env, 'REDIS_PORT', '6379');
 
-module.exports.KAFKA_TOPIC =_.get(process.env,'KAFKA_TOPIC','test')
+module.exports.KAFKA_TOPIC =_.get(process.env,'KAFKA_TOPIC','test');
+
+module.exports.ELASTIC_URL = _.get(process.env, 'ELASTIC_HOST','http://localhost:9200');
+module.exports.ELASTIC_USERNAME = _.get(process.env, 'ELASTIC_USERNAME', 'elastic');
+module.exports.ELASTIC_PASSWORD = _.get(process.env, 'ELASTIC_PASSWORD', 'changeme');
+

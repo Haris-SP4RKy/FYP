@@ -18,3 +18,7 @@ module.exports.produceToKafka = async (req, res) => {
       });
   }
 };
+
+module.exports.status = async (req, res) => {
+  return res.status(200).json({msg:"ONLINE",kafka:config.KAFKA_URL});
+};
