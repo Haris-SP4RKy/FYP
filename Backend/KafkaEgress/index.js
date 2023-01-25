@@ -6,5 +6,5 @@ const { kafkaegress } = require("./services/insertIntoDb");
 
 	(async () => {
 		await KafkaJs.consume(config.KAFKA_CONSUME_TOPIC, kafkaegress);
-		console.log('DB Conumer Service Started');
+		console.log('Kafka Egress Service Started');
 	})();

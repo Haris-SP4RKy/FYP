@@ -8,7 +8,8 @@ module.exports.deviceTypes =`
 
   extend type Query {
     devicebyId(id:ID!,sensor_type:String!): Device
-    getonlinedevices: Int!
+    getonlinedevices: JSON!
+    getdevicesstatus: JSON!
     
   }
   extend type Mutation {

@@ -9,15 +9,13 @@
 //     ...usersResolvers.Mutation
 //   }
 // };
-const { userTypes } = require ('./types.js')
-const { userQuery } =require( './query.js')
-const { userMutation } =require( './mutation.js')
-const { userResolvers } =require( './resolvers.js')
+const { analyticsTypes } = require ('./types.js')
+const { analyticsQuery } =require( './query.js')
+const { analyticsMutation } =require( './mutation.js')
 
 module.exports = {
-    userResolvers,
-    userTypes,
-    userQuery,
-    userMutation
+    analyticsTypes,
+    analyticsQuery,
+    analyticsMutation
 
 }
