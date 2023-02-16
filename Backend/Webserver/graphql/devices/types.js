@@ -10,6 +10,8 @@ module.exports.deviceTypes =`
     devicebyId(id:ID!,sensor_type:String!): Device
     getonlinedevices: JSON!
     getdevicesstatus: JSON!
+    getgraph(sensor_type:String!):JSON!
+    getdashboard(by:Int!):JSON!
     
   }
   extend type Mutation {
