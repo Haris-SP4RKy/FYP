@@ -12,4 +12,5 @@ const router = express.Router();
 //     scope: [ 'email' ]
 //   }));
 router.post('/recommend',indexcontroller.recommendations)
+router.get('/csv',indexcontroller.downloadascsv)
 module.exports = router;
