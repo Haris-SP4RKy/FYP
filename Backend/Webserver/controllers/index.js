@@ -1,5 +1,9 @@
 const db = require('../../KafkaEgress/db/pg/db');
 const {getAnalytics} = require('../services/getanalyticsbyarea');
+const {downloadascsv}=require('../services/CSV')
+const { AsyncParser } = require('@json2csv/node');
+// import { AsyncParser } from '@json2csv/node';
+
 
 
 module.exports.recommendations=async(req,res)=>{
@@ -19,3 +23,22 @@ module.exports.recommendations=async(req,res)=>{
         return res.status(400);
     }
 };
+
+
+
+module.exports.downloadascsv = async (req,res)=>{
+    try {
+        const result= await downloadascsv(req.body.sensor_type,req.body.by,req.body.area)
+        const parser = new AsyncParser();
+        const csv = await parser.parse(result).promise();
+        res.header('Content-Type', 'text/csv');
+        res.attachment('data.csv');
+        return res.send(csv);    
+
+        
+    } catch (error) {
+        console.log(error)
+        return res.status(400);
+
+    }
+}

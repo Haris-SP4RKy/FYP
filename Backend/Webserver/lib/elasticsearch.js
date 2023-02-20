@@ -33,5 +33,9 @@ class ElasticsearchWrapper {
     async get(params) {
       return this.client.get(params);
     }
+
+    async scroll(params) {
+      return this.client.scroll(params);
+    }
   }
 module.exports = ElasticsearchWrapper;
