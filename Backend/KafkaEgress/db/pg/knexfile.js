@@ -28,7 +28,7 @@ module.exports = {
   production: {
     client: 'postgresql',
     connection: {
-      host: '43.204.17.93',
+      host: 'growgreen-api.harisaqeel.com',
       port: '5432',
       user: 'postgres',
       password: 'postgres',

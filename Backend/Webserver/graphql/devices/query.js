@@ -28,7 +28,9 @@ module.exports.deviceQuery = {
 				'devices.id': args.id,
 				'groups.sensor_type': args.sensor_type
 			});
-
+        const [lastOnline] = await db.select('created_at as Last_heart_beat','data').from('sensor_data').where({'sensor_type': args.sensor_type,
+        'device_id': args.id
+        }).orderBy('created_at','desc').limit(1)
 		return {
 			id: device.id,
 			sensor_type: device.sensor_type,
@@ -36,7 +38,8 @@ module.exports.deviceQuery = {
 				name: device.name,
 				coordinates: device.coordinates,
 				long: device.longitude,
-				lat: device.latitude
+				lat: device.latitude,
+                lastheartbeat:lastOnline
 			}
 		};
 	},

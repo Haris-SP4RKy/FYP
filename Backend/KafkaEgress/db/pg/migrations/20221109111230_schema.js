@@ -50,7 +50,7 @@ exports.up = async (knex) => {
 		table.uuid('id').unique().primary().defaultTo(knex.raw('uuid_generate_v4()'));
 		table.uuid('device_id');
 		table.text('sensor_type');
-		table.binary('data');
+		table.jsonb('data');
 		table.index(['device_id']);
 		// table.text('latitude');
 		// table.text('longitude');
