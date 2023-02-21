@@ -1,4 +1,5 @@
 const Elasticsearch = require('../lib/elasticsearch');
+const _ = require('lodash');
 
 module.exports.Get_Humidity = async (optionsBy) => {
 	try {
@@ -9,7 +10,7 @@ module.exports.Get_Humidity = async (optionsBy) => {
 			4: 'now-90d/d'
 		};
 		const by = byMap[optionsBy] || byMap[1];
-        const queryMap = {
+		const queryMap = {
 			median: {
 				query: {
 					bool: {
@@ -20,7 +21,7 @@ module.exports.Get_Humidity = async (optionsBy) => {
 					}
 				},
 				aggregations: {
-                    count_documents: { value_count: { field: 'data.value' } },
+					count_documents: { value_count: { field: 'data.value' } },
 					avg_price: { percentiles: { field: 'data.value', percents: [50] } }
 				}
 			},
@@ -126,17 +127,23 @@ module.exports.Get_Humidity = async (optionsBy) => {
 		};
 
 		const elk = new Elasticsearch();
-		const result = {};
+		const queries = [];
+		const keys = [];
 		for (const [key, value] of Object.entries(queryMap)) {
-			result[key] = await elk.search({
+			keys.push(key);
+			queries.push({
 				index: 'sensor_data',
 				size: 0,
 				filter_path: 'aggregations',
 				body: value
 			});
 		}
-		return result;
+		const res = await Promise.allSettled(queries.map((o) => elk.search(o)));
+		return _.zipObject(
+			keys,
+			res.map((o) => o.value)
+		);
 	} catch (error) {
-        throw error
-    }
+		throw error;
+	}
 };

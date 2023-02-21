@@ -1,4 +1,6 @@
 const Elasticsearch = require('../lib/elasticsearch');
+const _ = require('lodash');
+
 
 module.exports.Get_Carbondioxide = async (optionsBy) => {
 	try {
@@ -240,18 +242,23 @@ module.exports.Get_Carbondioxide = async (optionsBy) => {
    
             
 		};
-
 		const elk = new Elasticsearch();
-		const result = {};
+		const queries = [];
+		const keys = [];
 		for (const [key, value] of Object.entries(queryMap)) {
-			result[key] = await elk.search({
+			keys.push(key);
+			queries.push({
 				index: 'sensor_data',
 				size: 0,
 				filter_path: 'aggregations',
 				body: value
 			});
 		}
-		return result;
+		const res = await Promise.allSettled(queries.map((o) => elk.search(o)));
+		return _.zipObject(
+			keys,
+			res.map((o) => o.value)
+		);
 	} catch (error) {
 		throw error;
 	}
