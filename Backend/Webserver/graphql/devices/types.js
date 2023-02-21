@@ -12,6 +12,12 @@ module.exports.deviceTypes =`
     getdevicesstatus: JSON!
     getgraph(sensor_type:String!):JSON!
     getdashboard(by:Int!):JSON!
+    gettemperature(by:Int!):JSON!
+    gethumidity(by:Int!):JSON!
+    getcarbondioxide(by:Int!):JSON!
+    getcarbonmonoxide(by:Int!):JSON!
+    getmethane(by:Int!):JSON!
+
     
   }
   extend type Mutation {

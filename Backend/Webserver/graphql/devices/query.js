@@ -2,6 +2,12 @@ const db = require('../../../KafkaEgress/db/pg/db');
 const { GraphQLError } = require('graphql');
 const { getAnalytics } = require('../../services/getanalytics');
 const { getGraph } = require('../../services/getgraph');
+const {Get_Humidity}= require('../../services/humidity');
+const {Get_Temperature}= require('../../services/temperature');
+const {Get_Carbondioxide}= require('../../services/carbondioxide');
+const {Get_Carbonmonoxide}= require('../../services/carbonmonoxide');
+const {Get_Methane}= require('../../services/methane');
+
 
 module.exports.deviceQuery = {
 	devicebyId: async (parent, args, info, context) => {
@@ -108,7 +114,56 @@ module.exports.deviceQuery = {
 		} catch (error) {
 			throw new Error(error);
 		}
-	}
+	},
+    gettemperature: async (parent, args, info, context) => {
+		try {
+
+			const result = await Get_Temperature(args.by);
+			return result;
+		} catch (error) {
+			throw new Error(error);
+		}
+	},
+    gethumidity: async (parent, args, info, context) => {
+		try {
+          
+
+			const result = await Get_Humidity(args.by);
+			return result;
+		} catch (error) {
+			throw new Error(error);
+		}
+	},
+    getcarbonmonoxide: async (parent, args, info, context) => {
+		try {
+          
+
+			const result = await Get_Carbonmonoxide(args.by);
+			return result;
+		} catch (error) {
+			throw new Error(error);
+		}
+	},
+    getcarbondioxide: async (parent, args, info, context) => {
+		try {
+          
+
+			const result = await Get_Carbondioxide(args.by);
+			return result;
+		} catch (error) {
+			throw new Error(error);
+		}
+	},
+    getmethane: async (parent, args, info, context) => {
+		try {
+          
+
+			const result = await Get_Methane(args.by);
+			return result;
+		} catch (error) {
+			throw new Error(error);
+		}
+	},
 };
 /**
  * {
