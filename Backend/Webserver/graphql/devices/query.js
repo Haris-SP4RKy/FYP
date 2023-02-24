@@ -1,4 +1,4 @@
-const db = require('../../../KafkaEgress/db/pg/db');
+const db = require('../../db/pg/db');
 const { GraphQLError } = require('graphql');
 const { getAnalytics } = require('../../services/getanalytics');
 const { getGraph } = require('../../services/getgraph');
@@ -7,6 +7,7 @@ const {Get_Temperature}= require('../../services/temperature');
 const {Get_Carbondioxide}= require('../../services/carbondioxide');
 const {Get_Carbonmonoxide}= require('../../services/carbonmonoxide');
 const {Get_Methane}= require('../../services/methane');
+const {filters}= require('../../services/filters');
 const { flatten, unflatten } = require('flat');
 const redis = require('../../db/redis/redis');
 const _ = require('lodash')
@@ -99,18 +100,18 @@ module.exports.deviceQuery = {
 	},
 	getgraph: async (parent, args, info, context) => {
 		try {
-            const client = redis.getClient();
-            let result = await client.hgetall('getgraph:'+args.sensor_type)
-            if(!_.isEmpty(result)) return unflatten(result)
+            // const client = redis.getClient();
+            // let result = await client.hgetall('getgraph:'+args.sensor_type)
+            // if(!_.isEmpty(result)) return unflatten(result)
             const sensors=['humidity','temperature','carbondioxide','carbonmonoxide','methane']
             if(!sensors.includes(args.sensor_type)){
                 throw new Error('Wrong Input')
             }
 
-			result = await getGraph(args.sensor_type);
-            const data = flatten(result)
-            await client.hset('getgraph:'+args.sensor_type,data)
-            await client.expire('getgraph:'+args.sensor_type,120)
+			const result = await getGraph(args.sensor_type);
+            // const data = flatten(result)
+            // await client.hset('getgraph:'+args.sensor_type,data)
+            // await client.expire('getgraph:'+args.sensor_type,120)
 			return result;
 		} catch (error) {
 			throw new Error(error);
@@ -118,13 +119,13 @@ module.exports.deviceQuery = {
 	},
 	getdashboard: async (parent, args, info, context) => {
 		try {
-            const client = redis.getClient();
-            let result = await client.hgetall('getdashboard:'+args.by)
-            if(!_.isEmpty(result)) return unflatten(result)
-			result = await getAnalytics(args.by);
-            const data = flatten(result)
-            await client.hset('getdashboard:'+args.by,data)
-            await client.expire('getdashboard:'+args.by,120)
+            // const client = redis.getClient();
+            // let result = await client.hgetall('getdashboard:'+args.by)
+            // if(!_.isEmpty(result)) return unflatten(result)
+			const result = await getAnalytics(args.by);
+            // const data = flatten(result)
+            // await client.hset('getdashboard:'+args.by,data)
+            // await client.expire('getdashboard:'+args.by,120)
 			return result;
 		} catch (error) {
 			throw new Error(error);
@@ -132,13 +133,13 @@ module.exports.deviceQuery = {
 	},
     gettemperature: async (parent, args, info, context) => {
 		try {
-            const client = redis.getClient();
-            let result = await client.hgetall('gettemperature:'+args.by)
-            if(!_.isEmpty(result)) return unflatten(result)
-		    result = await Get_Temperature(args.by);
-            const data = flatten(result)
-            await client.hset('gettemperature:'+args.by,data)
-            await client.expire('gettemperature:'+args.by,120)
+            // const client = redis.getClient();
+            // let result = await client.hgetall('gettemperature:'+args.by)
+            // if(!_.isEmpty(result)) return unflatten(result)
+		    const result = await Get_Temperature(args.by);
+            // const data = flatten(result)
+            // await client.hset('gettemperature:'+args.by,data)
+            // await client.expire('gettemperature:'+args.by,120)
 			return result;
 		} catch (error) {
 			throw new Error(error);
@@ -146,13 +147,13 @@ module.exports.deviceQuery = {
 	},
     gethumidity: async (parent, args, info, context) => {
 		try {
-            const client = redis.getClient();
-            let result = await client.hgetall('gethumidity:'+args.by)
-            if(!_.isEmpty(result)) return unflatten(result)
-			result = await Get_Humidity(args.by);
-            const data = flatten(result)
-            await client.hset('gethumidity:'+args.by,data)
-            await client.expire('gethumidity:'+args.by,120)
+            // const client = redis.getClient();
+            // let result = await client.hgetall('gethumidity:'+args.by)
+            // if(!_.isEmpty(result)) return unflatten(result)
+			const result = await Get_Humidity(args.by);
+            // const data = flatten(result)
+            // await client.hset('gethumidity:'+args.by,data)
+            // await client.expire('gethumidity:'+args.by,120)
 			return result;
 		} catch (error) {
 			throw new Error(error);
@@ -161,13 +162,13 @@ module.exports.deviceQuery = {
     getcarbonmonoxide: async (parent, args, info, context) => {
 		try {
           
-            const client = redis.getClient();
-            let result = await client.hgetall('getcarbonmonoxide:'+args.by)
-            if(!_.isEmpty(result)) return unflatten(result)
-			result = await Get_Carbonmonoxide(args.by);
-            const data = flatten(result)
-            await client.hset('getcarbonmonoxide:'+args.by,data)
-            await client.expire('getcarbonmonoxide:'+args.by,120)
+            // const client = redis.getClient();
+            // let result = await client.hgetall('getcarbonmonoxide:'+args.by)
+            // if(!_.isEmpty(result)) return unflatten(result)
+			const result = await Get_Carbonmonoxide(args.by);
+            // const data = flatten(result)
+            // await client.hset('getcarbonmonoxide:'+args.by,data)
+            // await client.expire('getcarbonmonoxide:'+args.by,120)
 			return result;
 		} catch (error) {
 			throw new Error(error);
@@ -176,13 +177,13 @@ module.exports.deviceQuery = {
     getcarbondioxide: async (parent, args, info, context) => {
 		try {
           
-            const client = redis.getClient();
-            let result = await client.hgetall('getcarbondioxide:'+args.by)
-            if(!_.isEmpty(result)) return unflatten(result)
-			result = await Get_Carbondioxide(args.by);
-            const data = flatten(result)
-            await client.hset('getcarbondioxide:'+args.by,data)
-            await client.expire('getcarbondioxide:'+args.by,120)
+            // const client = redis.getClient();
+            // let result = await client.hgetall('getcarbondioxide:'+args.by)
+            // if(!_.isEmpty(result)) return unflatten(result)
+			const result = await Get_Carbondioxide(args.by);
+            // const data = flatten(result)
+            // await client.hset('getcarbondioxide:'+args.by,data)
+            // await client.expire('getcarbondioxide:'+args.by,120)
 			return result;
 		} catch (error) {
 			throw new Error(error);
@@ -191,18 +192,34 @@ module.exports.deviceQuery = {
     getmethane: async (parent, args, info, context) => {
 		try {
           
-            const client = redis.getClient();
-            let result = await client.hgetall('getmethane:'+args.by)
-            if(!_.isEmpty(result)) return unflatten(result)
+            // const client = redis.getClient();
+            // let result = await client.hgetall('getmethane:'+args.by)
+            // if(!_.isEmpty(result)) return unflatten(result)
 			result = await Get_Methane(args.by);
             const data = flatten(result)
-            await client.hset('getmethane:'+args.by,data)
-            await client.expire('getmethane:'+args.by,120)
+            // await client.hset('getmethane:'+args.by,data)
+            // await client.expire('getmethane:'+args.by,120)
 			return result;
 		} catch (error) {
 			throw new Error(error);
 		}
 	},
+	getfilterss: async (parent, args, info, context) =>{
+
+		try {
+          
+            // const client = redis.getClient();
+            // let result = await client.hgetall('getmethane:'+args.by)
+            // if(!_.isEmpty(result)) return unflatten(result)
+			result = await filters(args.area,args.sensor);
+            // const data = flatten(result)
+            // await client.hset('getmethane:'+args.by,data)
+            // await client.expire('getmethane:'+args.by,120)
+			return result;
+		} catch (error) {
+			throw new Error(error);
+		}
+	}
 };
 /**
  * {

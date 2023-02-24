@@ -17,6 +17,7 @@ module.exports.deviceTypes =`
     getcarbondioxide(by:Int!):JSON!
     getcarbonmonoxide(by:Int!):JSON!
     getmethane(by:Int!):JSON!
+    getfilterss(area:Int!,sensor:String!):JSON!
 
     
   }

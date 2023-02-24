@@ -174,8 +174,8 @@ module.exports.downloadascsv = async (sensor_type, optionsBy, area) => {
 			index: 'sensor_data',
 			scroll: '1m',
 			size: 5000,
-			body: queryMap[sensor_type]
-		});
+			body: queryMap[sensor_type=== undefined ? 'allareas' : sensor_type]
+		}); 
 		let hits = results.hits.hits;
 		const result = hits.map((hit) => hit._source);
 		// const result = [];
