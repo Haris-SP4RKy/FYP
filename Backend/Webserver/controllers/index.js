@@ -1,4 +1,4 @@
-const db = require('../../KafkaEgress/db/pg/db');
+const db = require('../db/pg/db');
 const {getAnalytics} = require('../services/getanalyticsbyarea');
 const {downloadascsv}=require('../services/CSV')
 const { AsyncParser } = require('@json2csv/node');

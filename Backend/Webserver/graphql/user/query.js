@@ -1,4 +1,4 @@
-const db = require('../../../KafkaEgress/db/pg/db');
+const db = require('../../db/pg/db');
 const { GraphQLError }= require('graphql');
 
 module.exports.userQuery = {

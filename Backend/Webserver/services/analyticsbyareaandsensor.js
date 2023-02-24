@@ -1,6 +1,7 @@
 const Elasticsearch = require('../lib/elasticsearch');
 
-module.exports.getAnalytics = async (optionsBy, area) => {
+
+module.exports.getAnalyticsByAreaAndSensor = async (optionsBy, area,sensor) => {
 	try {
 		const byMap = {
 			1: 'now-1d/d',
@@ -8,7 +9,7 @@ module.exports.getAnalytics = async (optionsBy, area) => {
 			3: 'now-30d/d',
 			4: 'now-90d/d'
 		};
-		const by = byMap[optionsBy] || byMap[1];
+		const by = byMap[optionsBy] || byMap[2];
 		const queryMap = {
 			carbondioxide: {
 				query: {
@@ -91,23 +92,14 @@ module.exports.getAnalytics = async (optionsBy, area) => {
 				}
 			}
 		};
-		const elk = new Elasticsearch();
-		const queries = [];
-		const keys = [];
-		for (const [key, value] of Object.entries(queryMap)) {
-			keys.push(key);
-			queries.push({
-				index: 'sensor_data',
-				size: 0,
-				filter_path: 'aggregations',
-				body: value
-			});
-		}
-		const res = await Promise.allSettled(queries.map((o) => elk.search(o)));
-		return _.zipObject(
-			keys,
-			res.map((o) => o.value)
-		);
+        const elk = new Elasticsearch();  
+        result= await elk.search({
+          index: 'sensor_data',
+          size: 0,
+          filter_path: 'aggregations',
+          body: queryMap[sensor]
+        });
+        return result
 	} catch (error) {
 		console.error(error);
 		throw new Error(error);

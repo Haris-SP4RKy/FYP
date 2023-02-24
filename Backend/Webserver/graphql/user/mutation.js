@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { UserInputError } = require('@apollo/server');
 const config = require('../../config');
-const db = require('../../../KafkaEgress/db/pg/db');
+const db = require('../../db/pg/db');
 const { GraphQLError }= require('graphql');
 
 const {
