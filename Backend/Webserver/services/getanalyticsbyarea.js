@@ -1,4 +1,5 @@
 const Elasticsearch = require('../lib/elasticsearch');
+const _=require('lodash');
 
 module.exports.getAnalytics = async (optionsBy, area) => {
 	try {
