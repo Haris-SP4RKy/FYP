@@ -9,15 +9,15 @@ const {Get_Carbonmonoxide}= require('../../services/carbonmonoxide');
 const {Get_Methane}= require('../../services/methane');
 const {filters}= require('../../services/filters');
 const { flatten, unflatten } = require('flat');
-const redis = require('../../db/redis/redis');
+// const redis = require('../../db/redis/redis');
 const _ = require('lodash')
 
 
 module.exports.deviceQuery = {
 	devicebyId: async (parent, args, info, context) => {
-		// if(!info.Authenticated){
-		//     throw new Error('Not Authenticated' );
-		// }
+		if(!info.Authenticated){
+		    throw new Error('Not Authenticated' );
+		}
 		// const [device] = await db('devices').where({ "devices.id": args.id ,"devices.sensor_type": args.sensor_type}).join('groups',{'groups.device_id':args.id,'groups.sensor_type':args.sensor_type});
 		//const [group] =await db('groups').where({ "sensor_type": args.sensor_type,"device_id": args.id}).join('devices_group','group_id','groups.id');
 		const [device] = await db
@@ -54,9 +54,9 @@ module.exports.deviceQuery = {
 		};
 	},
 	getonlinedevices: async (parent, args, info, context) => {
-		// if(!info.Authenticated){
-		//     throw new Error('Not Authenticated' );
-		// }
+		if(!info.Authenticated){
+		    throw new Error('Not Authenticated' );
+		}
 		try {
 			const { rows } = await db.raw(`WITH active_status as (
                 select device_id, sensor_type, count(distinct (sd.device_id)) filter (where sd.created_at between now()- interval '5 mins' and now()) as available from sensor_data sd
@@ -78,9 +78,9 @@ module.exports.deviceQuery = {
 		}
 	},
 	getdevicesstatus: async (parent, args, info, context) => {
-		// if(!info.Authenticated){
-		//     throw new Error('Not Authenticated' );
-		// }
+		if(!info.Authenticated){
+		    throw new Error('Not Authenticated' );
+		}
 		try {
 			const { rows } = await db.raw(`
             WITH active_status as (
@@ -99,6 +99,9 @@ module.exports.deviceQuery = {
 		}
 	},
 	getgraph: async (parent, args, info, context) => {
+		if(!info.Authenticated){
+		    throw new Error('Not Authenticated' );
+		}
 		try {
             // const client = redis.getClient();
             // let result = await client.hgetall('getgraph:'+args.sensor_type)
@@ -119,6 +122,9 @@ module.exports.deviceQuery = {
 	},
 	getdashboard: async (parent, args, info, context) => {
 		try {
+			if(!info.Authenticated){
+				throw new Error('Not Authenticated' );
+			}
             // const client = redis.getClient();
             // let result = await client.hgetall('getdashboard:'+args.by)
             // if(!_.isEmpty(result)) return unflatten(result)
@@ -132,6 +138,9 @@ module.exports.deviceQuery = {
 		}
 	},
     gettemperature: async (parent, args, info, context) => {
+		if(!info.Authenticated){
+		    throw new Error('Not Authenticated' );
+		}
 		try {
             // const client = redis.getClient();
             // let result = await client.hgetall('gettemperature:'+args.by)
@@ -146,6 +155,9 @@ module.exports.deviceQuery = {
 		}
 	},
     gethumidity: async (parent, args, info, context) => {
+		if(!info.Authenticated){
+		    throw new Error('Not Authenticated' );
+		}
 		try {
             // const client = redis.getClient();
             // let result = await client.hgetall('gethumidity:'+args.by)
@@ -160,6 +172,9 @@ module.exports.deviceQuery = {
 		}
 	},
     getcarbonmonoxide: async (parent, args, info, context) => {
+		if(!info.Authenticated){
+		    throw new Error('Not Authenticated' );
+		}
 		try {
           
             // const client = redis.getClient();
@@ -175,6 +190,9 @@ module.exports.deviceQuery = {
 		}
 	},
     getcarbondioxide: async (parent, args, info, context) => {
+		if(!info.Authenticated){
+		    throw new Error('Not Authenticated' );
+		}
 		try {
           
             // const client = redis.getClient();
@@ -190,6 +208,9 @@ module.exports.deviceQuery = {
 		}
 	},
     getmethane: async (parent, args, info, context) => {
+		if(!info.Authenticated){
+		    throw new Error('Not Authenticated' );
+		}
 		try {
           
             // const client = redis.getClient();
@@ -205,6 +226,9 @@ module.exports.deviceQuery = {
 		}
 	},
 	getfilterss: async (parent, args, info, context) =>{
+		if(!info.Authenticated){
+		    throw new Error('Not Authenticated' );
+		}
 
 		try {
           

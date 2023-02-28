@@ -62,7 +62,7 @@ const server = new ApolloServer({
 	await server.start();
 
 	app.use('/graphql', expressMiddleware(server, {
-		context: async ({ req }) => ({ token: req.headers.token, user: req.user,authenticated:req.isAuth,decoded:req.decoded })
+		context: async ({ req }) => ({ token: req.headers.token, user: req.user,Authenticated:req.isAuth,decoded:req.decoded })
 	}));
 
 

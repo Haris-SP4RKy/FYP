@@ -29,16 +29,15 @@ module.exports.recommendations=async(req,res)=>{
 module.exports.downloadascsv = async (req,res)=>{
     try {
         const result= await downloadascsv(req.body.sensor_type,req.body.by,req.body.area)
+        if(result.length===0) throw new Error('No data ')
         const parser = new AsyncParser();
         const csv = await parser.parse(result).promise();
         res.header('Content-Type', 'text/csv');
         res.attachment('data.csv');
         return res.send(csv);    
 
-        
     } catch (error) {
-        console.log(error)
-        return res.status(400);
-
-    }
+        console.log(error);
+        return res.status(400).json({ error: error.message });
+      }
 }
