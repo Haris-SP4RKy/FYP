@@ -13,7 +13,7 @@ module.exports.downloadascsv = async (sensor_type, optionsBy, area) => {
 			carbondioxide: {
 				_source: [
 					'data.value',
-					'data.percenage',
+					'data.percentage',
 					'data.ppm',
 					'group_id',
 					'sensor_type',
@@ -33,9 +33,8 @@ module.exports.downloadascsv = async (sensor_type, optionsBy, area) => {
 				}
 			},
 			temperature: {
-				fields: [
+				_source: [
 					'data.value',
-					'data.percenage',
 					'data.ppm',
 					'group_id',
 					'sensor_type',
@@ -44,7 +43,6 @@ module.exports.downloadascsv = async (sensor_type, optionsBy, area) => {
 					'latitude',
 					'longitude'
 				],
-				_source: false,
 				query: {
 					bool: {
 						must: [
@@ -58,7 +56,7 @@ module.exports.downloadascsv = async (sensor_type, optionsBy, area) => {
 			carbonmonoxide: {
 				_source: [
 					'data.value',
-					'data.percenage',
+					'data.percentage',
 					'data.ppm',
 					'group_id',
 					'sensor_type',
@@ -80,7 +78,7 @@ module.exports.downloadascsv = async (sensor_type, optionsBy, area) => {
 			methane: {
 				_source: [
 					'data.value',
-					'data.percenage',
+					'data.percentage',
 					'data.ppm',
 					'group_id',
 					'sensor_type',
@@ -102,7 +100,6 @@ module.exports.downloadascsv = async (sensor_type, optionsBy, area) => {
 			humidity: {
 				_source: [
 					'data.value',
-					'data.percenage',
 					'data.ppm',
 					'group_id',
 					'sensor_type',
@@ -124,7 +121,7 @@ module.exports.downloadascsv = async (sensor_type, optionsBy, area) => {
 			allsensors: {
 				_source: [
 					'data.value',
-					'data.percenage',
+					'data.percentage',
 					'data.ppm',
 					'group_id',
 					'sensor_type',
@@ -145,7 +142,7 @@ module.exports.downloadascsv = async (sensor_type, optionsBy, area) => {
 			allareas: {
 				_source: [
 					'data.value',
-					'data.percenage',
+					'data.percentage',
 					'data.ppm',
 					'group_id',
 					'sensor_type',
@@ -179,6 +176,7 @@ module.exports.downloadascsv = async (sensor_type, optionsBy, area) => {
 		let hits = results.hits.hits;
 		const result = hits.map((hit) => hit._source);
 		// const result = [];
+		if(result.length<5000) return result
 		await Promise.all(
 			hits.map(async (hit) => {
 				const temp = await elk.scroll({

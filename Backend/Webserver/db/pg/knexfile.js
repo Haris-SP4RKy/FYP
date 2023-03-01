@@ -17,7 +17,7 @@ module.exports = {
       password: config.POSTGRE_PASSWORD
     },
     pool: {
-      min: 2,
+      min: 1,
       max: 10
     },
     migrations: {
@@ -35,7 +35,7 @@ module.exports = {
       database: 'postgres'
     },
     pool: {
-      min: 2,
+      min: 1,
       max: 10
     },
     migrations: {

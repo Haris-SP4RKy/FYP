@@ -84,7 +84,7 @@ module.exports.deviceQuery = {
 		try {
 			const { rows } = await db.raw(`
             WITH active_status as (
-            select device_id, sensor_type, count(distinct (sd.device_id)) filter (where sd.created_at between now()- interval '20 mins' and now()) as available from sensor_data sd
+            select device_id, sensor_type, count(distinct (sd.device_id)) filter (where sd.created_at between now()- interval '5 mins' and now()) as available from sensor_data sd
             group by device_id , sensor_type
             )
             select d.id, d.sensor_type, case when available is null then 0 else available end from devices d left join active_status
