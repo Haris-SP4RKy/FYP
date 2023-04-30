@@ -12,6 +12,59 @@ module.exports.Get_Carbonmonoxide = async (optionsBy) => {
 		};
 		const by = byMap[optionsBy] || byMap[1];
 		const queryMap = {
+			dayintervals: {
+				query: {
+					bool: {
+						must: [
+							{
+								term: {
+									sensor_type: 'carbonmonoxide'
+								}
+							},
+							{
+								range: {
+									created_at: {
+										gte: by, // last 24 hours
+										lte: 'now'
+									}
+								}
+							}
+						]
+					}
+				},
+				aggs: {
+					group_by_time_of_day: {
+						range: {
+							field: 'created_at',
+							ranges: [
+								{
+									from: 'now-1d/d', // last 24 hours
+									to: 'now-1d/d+6h' // morning (6am - 12pm)
+								},
+								{
+									from: 'now-1d/d+6h', // morning (6am - 12pm)
+									to: 'now-1d/d+12h' // afternoon (12pm - 6pm)
+								},
+								{
+									from: 'now-1d/d+12h', // afternoon (12pm - 6pm)
+									to: 'now-1d/d+18h' // evening (6pm - 12am)
+								},
+								{
+									from: 'now-1d/d+18h', // evening (6pm - 12am)
+									to: 'now' // night (12am - 6am)
+								}
+							]
+						},
+						aggs: {
+							avg_temperature: {
+								avg: {
+									field: 'data.value'
+								}
+							}
+						}
+					}
+				}
+			},
 			median: {
 				query: {
 					bool: {
