@@ -87,7 +87,7 @@ module.exports.deviceQuery = {
             select device_id, sensor_type, count(distinct (sd.device_id)) filter (where sd.created_at between now()- interval '5 mins' and now()) as available from sensor_data sd
             group by device_id , sensor_type
             )
-            select d.id, d.sensor_type, case when available is null then 0 else available end from devices d left join active_status
+            select d.id, d.sensor_type,(select devices_group.name from devices_group where devices_group.id=(select groups.group_id from groups where groups.device_id =d.id and groups.sensor_type=d.sensor_type)) as location, case when available is null then 0 else available end from devices d left join active_status
             on active_status.device_id = d.id and d.sensor_type = active_status.sensor_type
             `);
 			// const devices = await db.from('devices as d').select("d.id", "d.sensor_type","case when available is null then 0 else available end" ).leftJoin("")
