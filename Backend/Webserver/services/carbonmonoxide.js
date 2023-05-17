@@ -58,7 +58,7 @@ module.exports.Get_Carbonmonoxide = async (optionsBy) => {
 						aggs: {
 							avg_temperature: {
 								avg: {
-									field: 'data.value'
+									field: 'data.percentage'
 								}
 							}
 						}
